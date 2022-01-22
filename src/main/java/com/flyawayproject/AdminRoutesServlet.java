@@ -1,13 +1,23 @@
 package com.flyawayproject;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
-import java.sql.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightListServlet extends HttpServlet {
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class AdminRoutesServlet extends HttpServlet {
 	final String DB_URL = "jdbc:mysql://localhost:3306/Flyaway";
 	final String USER = "root";
 	final String PASSWORD = null;
@@ -20,12 +30,6 @@ public class FlightListServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session =request.getSession();
-		String date =(String)session.getAttribute("date");
-		String source =(String)session.getAttribute("source");
-		String destination=(String)session.getAttribute("destination");
-		String nopas =(String)session.getAttribute("nopas");
-		String rid =(String)session.getAttribute("rid");
 		ResultSet rs;
 		
 	
@@ -37,11 +41,9 @@ public class FlightListServlet extends HttpServlet {
 				System.out.println("Connection established!");
 					
                  try (PreparedStatement ps = connection
-						.prepareStatement("Select fno,price,starttime,arrivaltime from flight where rid=? and date =? and seats>=?")) {
+						.prepareStatement("Select rid , source,destination from route")) {
 					// Setting values for the placeholders
-					ps.setString(1, rid);
-					ps.setString(2, date);
-					ps.setString(3, nopas);
+					
 					
 
 					// Execute the query
@@ -53,16 +55,15 @@ public class FlightListServlet extends HttpServlet {
 					
 					int columnsNumber = rsmd.getColumnCount();
 					
-					List<FlightsResultsDTO> result = new ArrayList<>();
+					List<FlightRouteResultsDTO> result = new ArrayList<>();
 			
 						
 					while (rs.next()) 
 					{
-						FlightsResultsDTO newResult = new FlightsResultsDTO();
-						newResult.setFlightId(Integer.parseInt(rs.getString(1)));
-						newResult.setPrice(Float.parseFloat(rs.getString(2)));
-						newResult.setDepartureDate(rs.getString(3));
-						newResult.setArrivalDate(rs.getString(4));
+						FlightRouteResultsDTO newResult = new FlightRouteResultsDTO();
+						newResult.setRouteId(Integer.parseInt(rs.getString(1)));
+						newResult.setSource(rs.getString(2));
+						newResult.setDestination(rs.getString(3));
 							// Print one row
 							for (int i = 1; i <= columnsNumber; i++) 
 							{
@@ -74,17 +75,11 @@ public class FlightListServlet extends HttpServlet {
 
 						result.add(newResult);
 					}
-					session.setAttribute("flightList", result);
-					RequestDispatcher rd = request.getRequestDispatcher("flightListjsp");
+					HttpSession session =request.getSession();
+					session.setAttribute("routeList", result);
+					RequestDispatcher rd = request.getRequestDispatcher("routelistjsp");
 					rd.forward(request, response);
 					
-					/*for(FlightsResultsDTO test: result) {
-						System.out.println("new row");
-						System.out.println("flightID: " + test.getFlightId());
-						System.out.println("price: " + test.getPrice());
-						System.out.println("depDAte: " + test.getDepartureDate());
-						System.out.println("arrivalDate: " + test.getArrivalDate());
-					}*/
 				}
 			}
 		} catch (ClassNotFoundException | SQLException e) 
@@ -95,5 +90,3 @@ public class FlightListServlet extends HttpServlet {
 	}
 	}
 	
-	
-

@@ -24,9 +24,9 @@ public class RegistrationServlet extends HttpServlet {
 		String password = request.getParameter("password");
 		String confirmPassword = request.getParameter("confirmPassword");
 		
-		request.setAttribute("date", request.getAttribute("date"));
+	/*	request.setAttribute("date", request.getAttribute("date"));
 		
-		String date = request.getAttribute("date").toString();
+		String date = request.getAttribute("date").toString();*/
 		
 		String fullName = (firstName == null ? "" : firstName) + " " + (lastName == null ? "" : lastName);
 		
@@ -34,8 +34,8 @@ public class RegistrationServlet extends HttpServlet {
 			Cookie fnameCookie = new Cookie("first_name", firstName);
 			Cookie lnameCookie = new Cookie("last_name", lastName);
 			
-			fnameCookie.setMaxAge(12*60*60);
-			lnameCookie.setMaxAge(12*60*60);
+			fnameCookie.setMaxAge(1*60*60);
+			lnameCookie.setMaxAge(1*60*60);
 			
 			response.addCookie(fnameCookie);
 			response.addCookie(lnameCookie);
@@ -60,19 +60,17 @@ public class RegistrationServlet extends HttpServlet {
 						if(rowsAfftected > 0) {
 							System.out.println("A new record inserted!");
 							
+							response.getWriter().write(
+									"<html><body>"
+								
+											+"<h2>Registration successful!</h2>"
+											
+											+ "</body></html>"
+									);	
+							
 							RequestDispatcher rd = request.getRequestDispatcher("loginjsp");
 							rd.forward(request, response);
-							/*response.getWriter().write(
-									"<html><body>"
-											+ "<ul><li>" 
-											+ fullName
-											+ "</li><li>"
-											+ email
-											+ "</li></ul>"
-											+"<h2>Registration successful!</h2>"
-											+"<h3>New user record inserted!</h3>"
-											+ "</body></html>"
-									);	*/
+							
 						} else if(rowsAfftected == 0) {
 							System.out.println("No new record inserted!");
 							throw new SQLException();		
@@ -81,15 +79,33 @@ public class RegistrationServlet extends HttpServlet {
 				} 
 			} catch(ClassNotFoundException | SQLException e) {
 				System.out.println("DB error"  + e.getMessage());
+				
+				response.getWriter().write(
+						"<html><body>"
+								
+								
+								+"<h1> Registration failed!email id already present</h1>"
+								
+								+ "</body></html>"
+						);	
 				RequestDispatcher rd = request.getRequestDispatcher("registrationjsp");
 				rd.include(request, response);
-				response.getWriter().write("Registration failed!email id already present");	
+				/*response.getWriter().write("Registration failed!email id already present");	*/
 			}
 		} else {
 			System.out.println("Passwords do not match");
+			response.getWriter().write(
+					"<html><body>"
+							
+							
+							+"<h1> Passwords do not match!</h1>"
+							
+							+ "</body></html>"
+					);	
+			
 			RequestDispatcher rd = request.getRequestDispatcher("registrationjsp");
 			rd.include(request, response);
-			response.getWriter().write("Passwords do not match!");
+			/*response.getWriter().write("Passwords do not match!");*/
 					
 							
 							

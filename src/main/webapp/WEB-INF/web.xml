@@ -8,9 +8,20 @@
   <display-name>FlyAwayProject</display-name>
 
   <welcome-file-list>
-    <welcome-file>homepage.html</welcome-file>
+    <welcome-file>flyawayjsp</welcome-file>
   </welcome-file-list> 
  
+ 
+ 
+ <servlet>
+	<servlet-name>flyawayjsp</servlet-name>
+	<jsp-file>/flyawayjsp.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>flyawayjsp</servlet-name>
+	<url-pattern>/flyawayjsp</url-pattern>
+  </servlet-mapping>
  
  <filter>
     <filter-name>registrationDetailsValidationFilter</filter-name>
@@ -27,13 +38,24 @@
 	<jsp-file>/homepage.html</jsp-file>
   </servlet>
   
+        <servlet>
+	<servlet-name>flightListjsp</servlet-name>
+	<jsp-file>/flightListjsp.jsp</jsp-file>
+  </servlet>
+  
+  
+  <servlet>
+	<servlet-name>bookingservjsp</servlet-name>
+	<jsp-file>/flightListjsp.html</jsp-file>
+  </servlet>
+  
   <servlet>
 	<servlet-name>registrationservlet</servlet-name>
 	<servlet-class>com.flyawayproject.RegistrationServlet</servlet-class>
   </servlet>
   
     <servlet>
-	<servlet-name>flightList</servlet-name>
+	<servlet-name>flightlistservlet</servlet-name>
 	<servlet-class>com.flyawayproject.FlightListServlet</servlet-class>
   </servlet>
   
@@ -42,9 +64,19 @@
 	<jsp-file>/registration.html</jsp-file>
   </servlet>
   
+      <servlet>
+	<servlet-name>bookingpaymentjsp</servlet-name>
+	<jsp-file>/bookingpaymentjsp.jsp</jsp-file>
+  </servlet>
+  
   <servlet>
 	<servlet-name>loginservlet</servlet-name>
 	<servlet-class>com.flyawayproject.LoginServlet</servlet-class>
+  </servlet>
+  
+    <servlet>
+	<servlet-name>bookingservlet</servlet-name>
+	<servlet-class>com.flyawayproject.BookingServlet</servlet-class>
   </servlet>
   
     <servlet>
@@ -52,11 +84,12 @@
 	<jsp-file>/login.html</jsp-file>
   </servlet>
   
+
+  
       <servlet-mapping>
 	<servlet-name>homePagejsp</servlet-name>
 	<url-pattern>/homePagejsp</url-pattern>
   </servlet-mapping>
-  
   
   <servlet-mapping>
 	<servlet-name>homepageServlet</servlet-name>
@@ -72,15 +105,26 @@
 	<servlet-name>registrationservlet</servlet-name>
 	<url-pattern>/registration</url-pattern>
   </servlet-mapping>
-  
+   
    <filter-mapping>
     <filter-name>registrationDetailsValidationFilter</filter-name>
     <url-pattern>/registration</url-pattern>
   </filter-mapping>
   
+  
   <servlet-mapping>
 	<servlet-name>loginjsp</servlet-name>
 	<url-pattern>/loginjsp</url-pattern>
+  </servlet-mapping>
+  
+    <servlet-mapping>
+	<servlet-name>flightListjsp</servlet-name>
+	<url-pattern>/flightListjsp</url-pattern>
+  </servlet-mapping>
+  
+      <servlet-mapping>
+	<servlet-name>bookingpaymentjsp</servlet-name>
+	<url-pattern>/bookingpaymentjsp</url-pattern>
   </servlet-mapping>
   
    <servlet-mapping>
@@ -89,9 +133,163 @@
   </servlet-mapping>
   
    <servlet-mapping>
-	<servlet-name>flightList</servlet-name>
-	<url-pattern>/flightList</url-pattern>
+	<servlet-name>flightlistservlet</servlet-name>
+	<url-pattern>/flightlistservlet</url-pattern>
   </servlet-mapping>
   
+     <servlet-mapping>
+	<servlet-name>bookingservlet</servlet-name>
+	<url-pattern>/bookingservlet</url-pattern>
+  </servlet-mapping>
+  
+        <servlet>
+	<servlet-name>confirmationjsp</servlet-name>
+	<jsp-file>/confirmationjsp.jsp</jsp-file>
+  </servlet>
+  
+  
+        <servlet-mapping>
+	<servlet-name>confirmationjsp</servlet-name>
+	<url-pattern>/confirmationjsp</url-pattern>
+  </servlet-mapping>
+  
+      <servlet>
+	<servlet-name>confimrationservlet</servlet-name>
+	<servlet-class>com.flyawayproject.ConfirmationServlet</servlet-class>
+  </servlet>
+  
+        <servlet-mapping>
+	<servlet-name>confimrationservlet</servlet-name>
+	<url-pattern>/confimrationservlet</url-pattern>
+  </servlet-mapping> 
+  
+   <servlet>
+	<servlet-name>logoutjsp</servlet-name>
+	<jsp-file>/logoutjsp.jsp</jsp-file>
+  </servlet>
+  
+    <servlet-mapping>
+	<servlet-name>logoutjsp</servlet-name>
+	<url-pattern>/logoutjsp</url-pattern>
+  </servlet-mapping> 
+  
+  
+  
+  <servlet>
+	<servlet-name>adminloginservlet</servlet-name>
+	<servlet-class>com.flyawayproject.AdminLoginServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>adminloginservlet</servlet-name>
+	<url-pattern>/adminloginservlet</url-pattern>
+  </servlet-mapping>
+  
+ 
+  
+  <servlet>
+	<servlet-name>adminloginjsp</servlet-name>
+	<jsp-file>/adminlogin.html</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>adminloginjsp</servlet-name>
+	<url-pattern>/adminloginjsp</url-pattern>
+  </servlet-mapping>
+  
+  
+   <servlet>
+	<servlet-name>dashboardjsp</servlet-name>
+	<jsp-file>/dashboardjsp.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>dashboardjsp</servlet-name>
+	<url-pattern>/dashboardjsp</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  <servlet>
+	<servlet-name>adminroutesservlet</servlet-name>
+	<servlet-class>com.flyawayproject.AdminRoutesServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>adminroutesservlet</servlet-name>
+	<url-pattern>/adminroutesservlet</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+	<servlet-name>routelistjsp</servlet-name>
+	<jsp-file>/routelistjsp.jsp</jsp-file>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>routelistjsp</servlet-name>
+	<url-pattern>/routelistjsp</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+	<servlet-name>adminflightlistservlet</servlet-name>
+	<servlet-class>com.flyawayproject.AdminFlightListServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>adminflightlistservlet</servlet-name>
+	<url-pattern>/adminflightlistservlet</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+	<servlet-name>adminflightlistjsp</servlet-name>
+	<jsp-file>/adminflightlistjsp.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>adminflightlistjsp</servlet-name>
+	<url-pattern>/adminflightlistjsp</url-pattern>
+  </servlet-mapping>
+  
+  
+  <servlet>
+	<servlet-name>adminbookingservlet</servlet-name>
+	<servlet-class>com.flyawayproject.AdminBookingServlet</servlet-class>
+  </servlet>
+  
+  <servlet-mapping>
+	<servlet-name>adminbookingservlet</servlet-name>
+	<url-pattern>/adminbookingservlet</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+	<servlet-name>adminbookingjsp</servlet-name>
+	<jsp-file>/adminbookingjsp.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>adminbookingjsp</servlet-name>
+	<url-pattern>/adminbookingjsp</url-pattern>
+  </servlet-mapping>
+  
+   <servlet>
+	<servlet-name>adminlogoutjsp</servlet-name>
+	<jsp-file>/AdminLogoutjsp.jsp</jsp-file>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>adminlogoutjsp</servlet-name>
+	<url-pattern>/adminlogoutjsp</url-pattern>
+  </servlet-mapping>
+  
+  
+  
+  
+  <filter>
+    <filter-name>adminauthfilter</filter-name>
+    <filter-class>com.flyawayproject.Adminauthfilter</filter-class>
+  </filter>
+  
+   <filter-mapping>
+    <filter-name>adminauthfilter</filter-name>
+    <url-pattern>/admin/deatils/*</url-pattern>
+  </filter-mapping>
   
 </web-app>

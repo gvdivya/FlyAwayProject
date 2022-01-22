@@ -17,15 +17,23 @@ public class HomePageServlet extends HttpServlet {
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session =request.getSession();
 
 		String date = request.getParameter("date");
 		String source = request.getParameter("source");
 		String destination = request.getParameter("destination");
 		int nopas = Integer.parseInt(request.getParameter("nopas"));
+		
+		session.setAttribute("date",date);
+		session.setAttribute("source",source);
+		session.setAttribute("destination",destination);
+		session.setAttribute("nopas",request.getParameter("nopas"));
+		
 
 
 		ResultSet rs;
-		int routeId = 0;
+		Integer rid = 0;
 
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -45,40 +53,67 @@ public class HomePageServlet extends HttpServlet {
 
 					while (res.next()) {
 						System.out.println(res.getString(1) + " ");
-						routeId = res.getInt(1);
+						rid = res.getInt(1);
 						
-					}
+						session.setAttribute("rid",rid.toString());
+						
+					} 
                  
 				}
 
 				try (PreparedStatement ps = connection
 						.prepareStatement("Select count(*) from flight where rid=? and date =? and seats>=?")) {
 					// Setting values for the placeholders
-					ps.setInt(1, routeId);
+					ps.setInt(1, rid);
 					ps.setString(2, date);
 					ps.setInt(3, nopas);
+					
 
 					// Execute the query
 					rs = ps.executeQuery();
 					rs.next();
 				    int rowCount = rs.getInt(1);
+				    
+				   /* if (rowCount>0)
+				    {
+				    	response.getWriter().write(
+								"<html><body>"
+										+ "<ul><li>" 
+										+ rowCount
+										
+										+"<h2>flights found</h2>"
+										
+										+ "</body></html>"
+								);	
+				    }
+				    
+				    else {
+				    	response.getWriter().write(
+								"<html><body>"
+										
+										
+										+"<h2>flights not found</h2>"
+										
+										+ "</body></html>"
+								);	
+				    }*/
 				   
 
 					response.setContentType("text/html");
 
 					ResultSetMetaData rsmd = rs.getMetaData();
 					
-					//int columnsNumber = rsmd.getColumnCount();
+					int columnsNumber = rsmd.getColumnCount();
 					
 					if (rowCount>0)
 					
 					{
 						System.out.println("flights found"+ rowCount );
-						request.setAttribute("gowtham", "hi");
+						
 						RequestDispatcher rd = request.getRequestDispatcher("registrationjsp");
 						rd.forward(request, response);
 						
-						/*while (rs.next()) {
+						    while (rs.next()) {
 							// Print one row
 							for (int i = 1; i <= columnsNumber; i++) {
 
@@ -88,7 +123,7 @@ public class HomePageServlet extends HttpServlet {
 
 							System.out.println();// Move to the next line to print the next row.
 
-						}*/
+						}
 						
 		
 						
@@ -97,12 +132,14 @@ public class HomePageServlet extends HttpServlet {
 
 					else {
 						System.out.println("flights not found");
-						response.getWriter().write("Flights not found");
-						/*PrintWriter out = response.getWriter();  
-						response.setContentType("text/html");  
-						out.println("<script type=\"text/javascript\">");  
-						out.println("alert('Flights Not Found!');");  
-						out.println("</script>");*/
+						response.getWriter().write(
+								"<html><body>"
+										
+										
+										+"<h1>       Flights not found         </h1>"
+										
+										+ "</body></html>"
+								);	
 						RequestDispatcher rd = request.getRequestDispatcher("homePagejsp");
 						rd.include(request, response);
 

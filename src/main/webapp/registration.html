@@ -5,27 +5,55 @@
 <title>Registration</title>
 
 <style> 
-ul {
-  list-style-type: none;
+li {
+  float: left;
+}
+
+li a {
+  display: block;
   color: white;
-  margin: 0;
-  padding: 0;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 30px;
+  font-style: oblique;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #6495ED;
+}
+
+/* Style the top navigation bar */
+.topnav {
   overflow: hidden;
   background-color: #6495ED;
-  font-size: 20px;
+  
+}
+
+/* Style the topnav links lettering */
+.topnav a {
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  font-size: 40px;
   font-style: oblique;
+  
+}
+
+/* Change color on hover */
+.topnav a:hover {
+  background-color: #111;
+  color:#6495ED;
 }
 
 </style>
 </head>
-
-<body>
-
-	<ul>
-	<h2>FlyAway</h2>
-	</ul>
-
-</body>
 
 <style>
 
@@ -79,9 +107,37 @@ div {
 
 
 <body>
+    <script type="text/javascript">
+        function validate(){
+		    if(document.getElementById('fname').value == "") {
+		    	alert("First Name is Empty");
+		    	return false;
+		    }else if(document.getElementById('lname').value == "") {
+		    	alert("Last Name is Empty");
+		    	return false;
+		    }else if(document.getElementById('email').value == "") {
+		    	alert("Email is Empty");
+		    	return false;
+		    }else if(document.getElementById('password').value == "") {
+		    	alert("Password is Empty");
+		    	return false;
+		    }else if(document.getElementById('confirmPassword').value == "") {
+		    	alert("Confirm Password is Empty");
+		    	return false;
+		    }
+		 
+			document.getElementById('regfrm').submit();
+		}
+    </script>
+<div class="topnav">
+   <li><a href="homePagejsp">FlyAway</a></li>
+
+  
+</div>
+
 
 <div>
-  <form action="registration" method="POST">
+  <form action="registration" id="regfrm" method="POST">
     <label for="fname">First name</label>
     <input type="text" id="fname" name="fname" placeholder="Your name..">
 
@@ -97,7 +153,8 @@ div {
 	<label for="confirmPassword">Confirm Password</label>
 	<input type="password" id="confirmPassword" name="confirmPassword"placeholder="Confirm Password..">
 		
-    <input type="submit" value="Submit">
+   
+   <input type="submit" value="Register">
     
     <h3>(Already User )<a href="loginjsp">Login</a></h3>
    

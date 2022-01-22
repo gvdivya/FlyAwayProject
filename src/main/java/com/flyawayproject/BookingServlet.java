@@ -1,13 +1,24 @@
 package com.flyawayproject;
 
-import javax.servlet.*;
-import javax.servlet.http.*;
-import java.io.*;
-import java.sql.*;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightListServlet extends HttpServlet {
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+public class BookingServlet extends HttpServlet{
+
 	final String DB_URL = "jdbc:mysql://localhost:3306/Flyaway";
 	final String USER = "root";
 	final String PASSWORD = null;
@@ -26,8 +37,10 @@ public class FlightListServlet extends HttpServlet {
 		String destination=(String)session.getAttribute("destination");
 		String nopas =(String)session.getAttribute("nopas");
 		String rid =(String)session.getAttribute("rid");
-		ResultSet rs;
 		
+		ResultSet rs;
+		String flightId = request.getParameter("flightid");
+		session.setAttribute("fno", flightId);
 	
 		
 		try {
@@ -37,23 +50,16 @@ public class FlightListServlet extends HttpServlet {
 				System.out.println("Connection established!");
 					
                  try (PreparedStatement ps = connection
-						.prepareStatement("Select fno,price,starttime,arrivaltime from flight where rid=? and date =? and seats>=?")) {
+						.prepareStatement("Select fno,price,starttime,arrivaltime from flight where fno=? ")) {
 					// Setting values for the placeholders
-					ps.setString(1, rid);
-					ps.setString(2, date);
-					ps.setString(3, nopas);
+					ps.setString(1, flightId);
 					
-
 					// Execute the query
 					rs = ps.executeQuery();
 
 					response.setContentType("text/html");
 
 					ResultSetMetaData rsmd = rs.getMetaData();
-					
-					int columnsNumber = rsmd.getColumnCount();
-					
-					List<FlightsResultsDTO> result = new ArrayList<>();
 			
 						
 					while (rs.next()) 
@@ -63,19 +69,12 @@ public class FlightListServlet extends HttpServlet {
 						newResult.setPrice(Float.parseFloat(rs.getString(2)));
 						newResult.setDepartureDate(rs.getString(3));
 						newResult.setArrivalDate(rs.getString(4));
-							// Print one row
-							for (int i = 1; i <= columnsNumber; i++) 
-							{
-								System.out.print(rs.getString(i) + " "); // Print one element of a row
-							
-							}
 
-							System.out.println();// Move to the next line to print the next row.
-
-						result.add(newResult);
+						session.setAttribute("book", newResult);
+						
 					}
-					session.setAttribute("flightList", result);
-					RequestDispatcher rd = request.getRequestDispatcher("flightListjsp");
+					
+					RequestDispatcher rd = request.getRequestDispatcher("bookingpaymentjsp");
 					rd.forward(request, response);
 					
 					/*for(FlightsResultsDTO test: result) {
@@ -93,7 +92,6 @@ public class FlightListServlet extends HttpServlet {
 
 		}
 	}
-	}
-	
 	
 
+}

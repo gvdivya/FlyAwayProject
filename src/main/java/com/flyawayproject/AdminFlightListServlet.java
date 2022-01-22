@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FlightListServlet extends HttpServlet {
+public class AdminFlightListServlet extends HttpServlet {
 	final String DB_URL = "jdbc:mysql://localhost:3306/Flyaway";
 	final String USER = "root";
 	final String PASSWORD = null;
@@ -21,11 +21,7 @@ public class FlightListServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		HttpSession session =request.getSession();
-		String date =(String)session.getAttribute("date");
-		String source =(String)session.getAttribute("source");
-		String destination=(String)session.getAttribute("destination");
-		String nopas =(String)session.getAttribute("nopas");
-		String rid =(String)session.getAttribute("rid");
+		
 		ResultSet rs;
 		
 	
@@ -37,11 +33,8 @@ public class FlightListServlet extends HttpServlet {
 				System.out.println("Connection established!");
 					
                  try (PreparedStatement ps = connection
-						.prepareStatement("Select fno,price,starttime,arrivaltime from flight where rid=? and date =? and seats>=?")) {
-					// Setting values for the placeholders
-					ps.setString(1, rid);
-					ps.setString(2, date);
-					ps.setString(3, nopas);
+						.prepareStatement("Select fno,rid,price,seats,starttime,arrivaltime from flight ")) {
+					
 					
 
 					// Execute the query
@@ -53,16 +46,18 @@ public class FlightListServlet extends HttpServlet {
 					
 					int columnsNumber = rsmd.getColumnCount();
 					
-					List<FlightsResultsDTO> result = new ArrayList<>();
+					List<AdminFlightResultsDTO> result = new ArrayList<>();
 			
 						
 					while (rs.next()) 
 					{
-						FlightsResultsDTO newResult = new FlightsResultsDTO();
+						AdminFlightResultsDTO newResult = new AdminFlightResultsDTO();
 						newResult.setFlightId(Integer.parseInt(rs.getString(1)));
-						newResult.setPrice(Float.parseFloat(rs.getString(2)));
-						newResult.setDepartureDate(rs.getString(3));
-						newResult.setArrivalDate(rs.getString(4));
+						newResult.setRouteId(Integer.parseInt(rs.getString(2)));
+						newResult.setPrice(Float.parseFloat(rs.getString(3)));
+						newResult.setSeats(Integer.parseInt(rs.getString(4)));
+						newResult.setDeparturetime(rs.getString(5));
+						newResult.setArrivaltime(rs.getString(6));
 							// Print one row
 							for (int i = 1; i <= columnsNumber; i++) 
 							{
@@ -74,8 +69,8 @@ public class FlightListServlet extends HttpServlet {
 
 						result.add(newResult);
 					}
-					session.setAttribute("flightList", result);
-					RequestDispatcher rd = request.getRequestDispatcher("flightListjsp");
+					session.setAttribute("adminflightList", result);
+					RequestDispatcher rd = request.getRequestDispatcher("adminflightlistjsp");
 					rd.forward(request, response);
 					
 					/*for(FlightsResultsDTO test: result) {
